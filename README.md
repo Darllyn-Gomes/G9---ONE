@@ -6,7 +6,7 @@ Projeto interativo para realizar sorteios de amigo secreto com uma interface mod
 
 ## 📸 Preview
 
-> *(![Descrição](assets/preview.gif))*
+![Demonstração do projeto](assets/preview.gif)
 
 ---
 
