@@ -1,7 +1,6 @@
  # Programa G9 - Oracle Next Education
 # 🎁 Amigo Secreto
 
-Este repositório contém os projetos, desafios e atividades desenvolvidos pelo Grupo 9 na trilha Iniciante em Programação do programa Oracle Next Education (ONE).
 Projeto interativo para realizar sorteios de amigo secreto com uma interface moderna, responsiva e acessível. Ideal para festas, confraternizações e eventos entre amigos ou colegas!
 
 ## Tecnologias utilizadas
