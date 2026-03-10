@@ -1,0 +1,94 @@
+package br.com.litealura.Model;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Entity
+@Table(name="livros")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Book {
+
+    @Id
+    @Column(unique = true)
+    private Long id;
+
+    @Column(name = "titulo")
+    private String title;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "livro_autor",
+            joinColumns = @JoinColumn(name = "livro_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id", referencedColumnName = "id")
+    )
+    private List<Author> authors;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "livro_lingua", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "lingua")
+    private List<String> languages;
+
+    @Column(name = "numero_downloads")
+    @JsonAlias("download_count")
+    private Integer qtdDownload;
+
+    public Book(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public Integer getQtdDownload() {
+        return qtdDownload;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+
+    //======= RETORNO DE OBJETO =======
+    @Override
+    public String toString(){
+
+        //Concatenação de nome de autor ou autores
+        String concatAuthor = this.getAuthors().size() <= 1 ? "Autor" : "Authors";
+
+        //Para cada autor encontrado na lista de autores do livro, transforma
+        //em uma 'String' separada por vírgula.
+        String autores = this.getAuthors().stream()
+                .map(Author::getNome)
+                .collect(Collectors.joining(", "));
+
+        //Para cada linguagem dentro de linguagens do livro, concatena numa
+        //lista separada por vírgula.
+        String languages = String.join(", ", this.getLanguages());
+
+        //Retorna, de maneira concatenada, as informações do livro
+        return """
+                ======= LIVRO =======
+                Titulo: %s
+                %s: %s
+                Idioma: %s
+                Número de Downloads: %d
+                """.formatted(
+                        this.getTitle(),
+                        concatAuthor,
+                        autores,
+                        languages,
+                        this.getQtdDownload());
+    }
+
+}
